@@ -20,6 +20,7 @@ private:
     void getWhitelistCount();
 
 public:
+    Whitelist();
     void remove(uint32_t UID);
     void add(uint32_t UID);
     void reset();

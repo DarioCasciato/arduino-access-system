@@ -11,7 +11,8 @@
 #include "../lib/EdgeDetection.h"
 
 Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
-Tag rfid();
+Tag rfid;
+Signalisation signalize;
 
 void setup()
 {

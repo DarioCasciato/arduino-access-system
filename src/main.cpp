@@ -1,9 +1,27 @@
-#include <Arduino.h>
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
 
-void setup() {
-  // put your setup code here, to run once:
+#include <Arduino.h>
+#include "hardware.h"
+#include "configurations.h"
+#include "whitelist.h"
+#include "rfid_utility.h"
+#include "signalisation.h"
+#include "../lib/EdgeDetection.h"
+
+Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
+Tag rfid();
+
+void setup()
+{
+  Hardware::init();
+  whitelist.init();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop()
+{
+  for (;;)
+  {
+  }
 }

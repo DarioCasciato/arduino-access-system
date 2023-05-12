@@ -18,4 +18,4 @@ public:
     void pause();
 };
 
-#endif // ARDUINO_ACCESS_SYSTE_BUZZER_
+#endif // ARDUINO_ACCESS_SYSTEM_BUZZER_

@@ -95,7 +95,7 @@ bool Whitelist::add(uint32_t UID)
 
     for (unsigned char nextNull = 0; nextNull < _addrWLCount; nextNull++)
     {
-        if (whitelistMember[nextNull] == 0 || whitelistMember[nextNull] == NULL)
+        if (whitelistMember[nextNull] == 0 || whitelistMember[nextNull] == 0)
         {
             whitelistMember[nextNull] = UID;
             EEPROM.put(_addrWL, whitelistMember);
@@ -130,7 +130,7 @@ bool Whitelist::isMember(uint32_t UID)
 {
     for (unsigned char searchLoop = 0; searchLoop < _addrWLCount; searchLoop++)
     {
-        if (whitelistMember[searchLoop] == 0 || whitelistMember[searchLoop] == NULL)
+        if (whitelistMember[searchLoop] == 0 || whitelistMember[searchLoop] == 0)
             return 0;
         if (whitelistMember[searchLoop] == UID)
             return 1;

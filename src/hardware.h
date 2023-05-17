@@ -17,18 +17,18 @@ namespace Hardware
 {
     void init();
     // RGB LED
-    SK6812 ledSignalization(1);
+    extern SK6812 ledSignalization;
 
     // Buzzer
-    Buzzer buzzer(SIGNALIZER_BUZZER);
+    extern Buzzer buzzer;
 
     // RFID Reader
-    MFRC522 reader(SS_PIN, RST_PIN);
-    MFRC522::StatusCode status;
-    MFRC522::MIFARE_Key key;
+    extern MFRC522 reader;
+    extern MFRC522::StatusCode status;
+    extern MFRC522::MIFARE_Key key;
 
     // access LED
-    LED accessLED(SIGNALIZER_OPENER);
+    extern LED accessLED;
 
     // Keypad
     //! Keypad keypad();

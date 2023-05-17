@@ -63,10 +63,10 @@ void Whitelist::remove(uint32_t UID)
         if (whitelistMember[searchLoop] == UID)
         {
             // Deletes User
-            whitelistMember[searchLoop] == 0;
+            whitelistMember[searchLoop] = 0;
 
             // Moves back the "NULL" value
-            for (int moveLoop = searchLoop; moveLoop < _addrWLCount; moveLoop++)
+            for (uint8_t moveLoop = searchLoop; moveLoop < _addrWLCount; moveLoop++)
                 whitelistMember[moveLoop] = whitelistMember[moveLoop + 1];
 
             whitelistMember[_addrWLCount - 1] = 0x00000000;
@@ -83,13 +83,13 @@ void Whitelist::remove(uint32_t UID)
 bool Whitelist::add(uint32_t UID)
 {
     if (UID == 0)
-        return;
+        return 0;
 
     for (unsigned char searchLoop = 0; searchLoop < _addrWLCount; searchLoop++)
     {
         if (whitelistMember[searchLoop] == UID)
         {
-            return;
+            return 0;
         }
     }
 

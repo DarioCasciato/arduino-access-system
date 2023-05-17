@@ -5,6 +5,25 @@
 #include <Arduino.h>
 #include "hardware.h"
 
+
+namespace Hardware
+{
+    // RGB LED
+    SK6812 ledSignalization(1);
+
+    // Buzzer
+    Buzzer buzzer(SIGNALIZER_BUZZER);
+
+    // RFID Reader
+    MFRC522 reader(SS_PIN, RST_PIN);
+    MFRC522::StatusCode status;
+    MFRC522::MIFARE_Key key;
+
+    // access LED
+    LED accessLED(SIGNALIZER_OPENER);
+} // namespace Hardware
+
+
 void Hardware::init()
 {
     Hardware::reader.PCD_Init();

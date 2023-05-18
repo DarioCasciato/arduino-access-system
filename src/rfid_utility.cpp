@@ -37,6 +37,7 @@ bool Tag::checkMaster()
                 return 1;
         }
     }
+    return 0;
 }
 
 bool Tag::tagPresent()
@@ -79,6 +80,7 @@ bool Tag::tagPresent()
         repeatFlagPresent = 1;
         return 1;
     }
+    return 0;
 }
 
 uint32_t Tag::getUID()

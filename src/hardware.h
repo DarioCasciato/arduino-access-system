@@ -3,10 +3,10 @@
 // =========================================
 
 #include <Arduino.h>
-#include "../lib/Buzzer.h"
-#include "../lib/LED.h"
-#include "../lib/SK6812.h"
-#include "../lib/Keypad.h"
+#include "Buzzer.h"
+#include "LED.h"
+#include "SK6812.h"
+#include "Keypad.h"
 #include <MFRC522.h>
 #include "configurations.h"
 

@@ -14,6 +14,11 @@ Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
 Tag rfid;
 Signalisation signalize;
 
+uint8_t tagAvailableVal;
+EdgeDetection tagAvailable(&tagAvailableVal);
+
+void refreshData();
+
 void setup()
 {
   Hardware::init();
@@ -25,5 +30,12 @@ void loop()
 
   for (;;)
   {
+    refreshData();
   }
+}
+
+void refreshData()
+{
+  tagAvailableVal = rfid.tagPresent();
+  EdgeDetection::updateEdges();
 }

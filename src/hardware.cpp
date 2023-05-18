@@ -3,8 +3,8 @@
 // =========================================
 
 #include <Arduino.h>
+#include <SPI.h>
 #include "hardware.h"
-
 
 namespace Hardware
 {
@@ -23,9 +23,9 @@ namespace Hardware
     LED accessLED(SIGNALIZER_OPENER);
 } // namespace Hardware
 
-
 void Hardware::init()
 {
+    SPI.begin();
     Hardware::reader.PCD_Init();
     Hardware::ledSignalization.set_output(SIGNALIZER_LED);
     Hardware::buzzer.pause();

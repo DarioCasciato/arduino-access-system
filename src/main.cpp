@@ -5,18 +5,7 @@
 #include <Arduino.h>
 #include "hardware.h"
 #include "configurations.h"
-#include "whitelist.h"
-#include "rfid_utility.h"
-#include "signalisation.h"
-#include "EdgeDetection.h"
-
-
-Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
-Tag rfid;
-Signalisation signalize;
-
-uint8_t tagAvailableVal;
-EdgeDetection tagAvailable(&tagAvailableVal);
+#include "state.h"
 
 
 void refreshData();
@@ -25,7 +14,7 @@ void refreshData();
 void setup()
 {
   Hardware::init();
-  whitelist.init();
+  General::whitelist.init();
 }
 
 void loop()
@@ -34,12 +23,14 @@ void loop()
   for (;;)
   {
     refreshData();
+
+    State::stateDriver();
   }
 }
 
 
 void refreshData()
 {
-  tagAvailableVal = rfid.tagPresent();
+  General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 }

@@ -2,7 +2,7 @@
 #include "hardware.h"
 #include "rfid_utility.h"
 
-static byte blockData[16] = {"MasterMediumCard"};
+byte blockData[16] = {"MasterMediumCard"};
 static byte bufferLen = 18;
 static byte readBlockData[18];
 static bool repeatFlagPresent = 0;

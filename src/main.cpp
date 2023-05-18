@@ -10,6 +10,7 @@
 #include "signalisation.h"
 #include "EdgeDetection.h"
 
+
 Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
 Tag rfid;
 Signalisation signalize;
@@ -17,7 +18,9 @@ Signalisation signalize;
 uint8_t tagAvailableVal;
 EdgeDetection tagAvailable(&tagAvailableVal);
 
+
 void refreshData();
+
 
 void setup()
 {
@@ -33,6 +36,7 @@ void loop()
     refreshData();
   }
 }
+
 
 void refreshData()
 {

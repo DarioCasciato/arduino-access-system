@@ -28,6 +28,8 @@ void Hardware::init()
     SPI.begin();
     Hardware::reader.PCD_Init();
     Hardware::ledSignalization.set_output(SIGNALIZER_LED);
+    Hardware::ledSignalization.set_rgbw(0, {0, 0, 0, 0});
+    Hardware::ledSignalization.sync();
     Hardware::buzzer.pause();
     Hardware::accessLED.off();
 }

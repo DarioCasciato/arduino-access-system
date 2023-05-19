@@ -2,9 +2,9 @@
 #include "hardware.h"
 #include "rfid_utility.h"
 
-byte blockData[16] = {"MasterMediumCard"};
-static byte bufferLen = 18;
-static byte readBlockData[18];
+uint8_t blockData[16] = {"MasterMediumCard"};
+static uint8_t bufferLen = 18;
+static uint8_t readBlockData[18];
 static bool repeatFlagPresent = 0;
 static uint32_t TagUID = 0;
 
@@ -15,7 +15,7 @@ Tag::Tag()
 bool Tag::checkMaster()
 {
     Hardware::status = NULL;
-    byte status = Hardware::reader.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 2, &Hardware::key, &(Hardware::reader.uid));
+    uint8_t status = Hardware::reader.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 2, &Hardware::key, &(Hardware::reader.uid));
 
     if (status != MFRC522::STATUS_OK)
         return 0;
@@ -86,7 +86,7 @@ bool Tag::tagPresent()
 uint32_t Tag::getUID()
 {
     Hardware::status = NULL;
-    byte status = Hardware::reader.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 2, &Hardware::key, &(Hardware::reader.uid));
+    uint8_t status = Hardware::reader.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 2, &Hardware::key, &(Hardware::reader.uid));
 
     if (status != MFRC522::STATUS_OK)
         return TagUID;
@@ -98,7 +98,7 @@ uint32_t Tag::getUID()
     else
     {
         unsigned long tempUID[4] = {0};
-        for (byte i = 0; i < Hardware::reader.uid.size; i++)
+        for (uint8_t i = 0; i < Hardware::reader.uid.size; i++)
             tempUID[i] = Hardware::reader.uid.uidByte[i];
 
         volatile unsigned long UID = 0;

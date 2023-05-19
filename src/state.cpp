@@ -5,7 +5,6 @@
 #include <Arduino.h>
 #include "state.h"
 
-
 namespace General
 {
     Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
@@ -22,7 +21,6 @@ namespace State
     using namespace General;
 
     States state = States::st_noMaster;
-
     void stateDriver()
     {
         switch (State::state)

@@ -6,6 +6,7 @@
 #include "hardware.h"
 #include "configurations.h"
 #include "state.h"
+#include "General.h"
 
 
 void refreshData();
@@ -28,7 +29,7 @@ void loop()
 
     State::stateDriver();
 
-    delay(10);
+    delay(100);
   }
 }
 

@@ -4,23 +4,11 @@
 
 #include <Arduino.h>
 #include "state.h"
-
-namespace General
-{
-    badgePresent badge = {0};
-    Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
-    Tag rfid;
-    Signalisation signalize;
-
-    uint8_t tagAvailableVal;
-    EdgeDetection tagAvailable(&tagAvailableVal);
-} // namespace General
+#include "General.h"
 
 
 namespace State
 {
-    using namespace General;
-
     States state = States::st_noMaster;
     void stateDriver()
     {
@@ -38,13 +26,15 @@ namespace State
 
     void stateNoMaster()
     {
-        if(tagAvailable.getEdgePos())
+        if(General::tagAvailable.getEdgePos())
         {
-            if(badge.isMaster)
+            if(General::badge.isMaster)
                 Hardware::accessLED.on();
             else
                 Hardware::accessLED.off();
         }
+
+        Serial.println(General::tagAvailable.getActState());
     }
 
     void stateIdle()

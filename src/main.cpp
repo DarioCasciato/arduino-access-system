@@ -38,7 +38,6 @@ void refreshData()
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
-
   General::badge.isMaster = General::rfid.checkMaster();
 
   if(General::tagAvailable.getEdgePos())
@@ -48,5 +47,5 @@ void refreshData()
 
 
   for (uint8_t i = 0; i < 6; i++)
-  Hardware::key.keyByte[i] = 0xFF;
+    Hardware::key.keyByte[i] = 0xFF;
 }

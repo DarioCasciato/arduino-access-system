@@ -6,10 +6,12 @@
 #include "hardware.h"
 #include "configurations.h"
 #include "state.h"
+#include "General.h"
 
 
 void refreshData();
 
+bool isMaster = 0;
 
 void setup()
 {
@@ -27,8 +29,6 @@ void loop()
     refreshData();
 
     State::stateDriver();
-
-    delay(10);
   }
 }
 
@@ -38,6 +38,15 @@ void refreshData()
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
+
+  General::badge.isMaster = General::rfid.checkMaster();
+
+  if(General::tagAvailable.getEdgePos())
+  {
+    General::badge.uid = General::rfid.getUID();
+  }
+
+
   for (uint8_t i = 0; i < 6; i++)
-    Hardware::key.keyByte[i] = 0xFF;
+  Hardware::key.keyByte[i] = 0xFF;
 }

@@ -40,4 +40,10 @@ void refreshData()
 
   for (uint8_t i = 0; i < 6; i++)
     Hardware::key.keyByte[i] = 0xFF;
+
+  if(General::tagAvailable.getEdgePos())
+  {
+    General::badge.uid = General::rfid.getUID();
+    General::badge.isMaster = General::rfid.checkMaster();
+  }
 }

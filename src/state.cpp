@@ -7,6 +7,7 @@
 
 namespace General
 {
+    badgePresent badge = {0};
     Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
     Tag rfid;
     Signalisation signalize;
@@ -28,7 +29,7 @@ namespace State
         case States::st_noMaster: State::stateNoMaster(); break;
         case States::st_idle: State::stateIdle(); break;
         case States::st_keying: State::stateKeying(); break;
-        
+
         default:
             break;
         }
@@ -37,12 +38,18 @@ namespace State
 
     void stateNoMaster()
     {
-        
+        if(tagAvailable.getEdgePos())
+        {
+            if(badge.isMaster)
+                Hardware::accessLED.on();
+            else
+                Hardware::accessLED.off();
+        }
     }
 
     void stateIdle()
     {
-        
+
     }
 
     void stateKeying()

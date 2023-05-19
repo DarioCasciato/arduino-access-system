@@ -12,8 +12,15 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_STATE_
 #define ARDUINO_ACCESS_SYSTEM_STATE_
 
+struct badgePresent
+{
+    uint32_t uid;
+    bool isMaster;
+};
+
 namespace General
 {
+    extern badgePresent badge;
     extern Whitelist whitelist;
     extern Tag rfid;
     extern Signalisation signalize;

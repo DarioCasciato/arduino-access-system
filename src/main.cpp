@@ -11,6 +11,7 @@
 
 void refreshData();
 
+bool isMaster = 0;
 
 void setup()
 {
@@ -28,8 +29,6 @@ void loop()
     refreshData();
 
     State::stateDriver();
-
-    delay(100);
   }
 }
 
@@ -39,12 +38,15 @@ void refreshData()
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
-  for (uint8_t i = 0; i < 6; i++)
-    Hardware::key.keyByte[i] = 0xFF;
+
+  General::badge.isMaster = General::rfid.checkMaster();
 
   if(General::tagAvailable.getEdgePos())
   {
     General::badge.uid = General::rfid.getUID();
-    General::badge.isMaster = General::rfid.checkMaster();
   }
+
+
+  for (uint8_t i = 0; i < 6; i++)
+  Hardware::key.keyByte[i] = 0xFF;
 }

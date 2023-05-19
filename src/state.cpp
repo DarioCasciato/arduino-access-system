@@ -26,15 +26,7 @@ namespace State
 
     void stateNoMaster()
     {
-        if(General::tagAvailable.getEdgePos())
-        {
-            if(General::badge.isMaster)
-                Hardware::accessLED.on();
-            else
-                Hardware::accessLED.off();
-        }
 
-        Serial.println(General::tagAvailable.getActState());
     }
 
     void stateIdle()

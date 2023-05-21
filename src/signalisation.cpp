@@ -136,3 +136,9 @@ void Signalisation::fullReset()
     Hardware::ledSignalization.set_rgbw(0, color_off);
     Hardware::ledSignalization.sync();
 }
+
+void Signalisation::green()
+{
+    Hardware::ledSignalization.set_rgbw(0, color_green);
+    Hardware::ledSignalization.sync();
+}

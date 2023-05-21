@@ -23,6 +23,7 @@ public:
     void close();
     void resetWhitelist();
     void fullReset();
+    void green();
 };
 
 #endif // ARDUINO_ACCESS_SYSTEM_SIGNALISATION_

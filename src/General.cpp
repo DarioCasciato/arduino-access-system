@@ -7,7 +7,7 @@
 
 namespace General
 {
-    badgePresent badge = {0};
+    Properties properties = {0};
     Whitelist whitelist(ADDRESS_WHITELIST, ADDRESS_WHITELISTCOUNT, ADDRESS_MASTER);
     Tag rfid;
     Signalisation signalize;

@@ -33,6 +33,8 @@ public:
     bool isMember(uint32_t UID);
     void masterSet(uint32_t UID);
     void masterReset();
+
+    uint32_t getRegisteredMaster() { return registeredMaster; };
 };
 
 #endif // ARDUINO_ACCESS_SYSTEM_WHITELIST_

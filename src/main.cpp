@@ -38,11 +38,11 @@ void refreshData()
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
-  General::badge.isMaster = General::rfid.checkMaster();
+  General::properties.isMaster = General::rfid.checkMaster();
 
   if(General::tagAvailable.getEdgePos())
   {
-    General::badge.uid = General::rfid.getUID();
+    General::properties.uid = General::rfid.getUID();
   }
 
 

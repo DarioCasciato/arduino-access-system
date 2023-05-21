@@ -6,10 +6,15 @@
 #include "state.h"
 #include "General.h"
 
+using namespace General;
+
+void accessGranted();
+
 
 namespace State
 {
     States state = States::st_noMaster;
+
     void stateDriver()
     {
         switch (State::state)
@@ -26,7 +31,25 @@ namespace State
 
     void stateNoMaster()
     {
+        if (properties.keyingMasterReset)
+        {
+            if(tagAvailable.getEdgeNeg())
+            {
+                properties.keyingMasterReset = 0;
+            }
+        }
+        else
+        {
+            if (tagAvailable.getActState() &&
+                properties.isMaster)
+            {
+                signalize.green();
+                whitelist.masterSet(properties.uid);
 
+                properties.startKeying = 1;
+                State::state = States::st_keying;
+            }
+        }
     }
 
     void stateIdle()
@@ -41,3 +64,12 @@ namespace State
 } // namespace State
 
 
+
+void accessGranted()
+{
+    Hardware::accessLED.on();
+    signalize.positive();
+    delay(OPEN_TIME * 1000);
+
+    Hardware::accessLED.off();
+}

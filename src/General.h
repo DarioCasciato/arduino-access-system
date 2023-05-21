@@ -12,17 +12,17 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_GENERAL_
 #define ARDUINO_ACCESS_SYSTEM_GENERAL_
 
-#define LOG_SERIAL(format, ...) Serial.printf(format, ##__VA_ARGS__)
-
-struct badgePresent
+struct Properties
 {
     uint32_t uid;
     bool isMaster;
+    bool keyingMasterReset;
+    bool startKeying;
 };
 
 namespace General
 {
-    extern badgePresent badge;
+    extern Properties properties;
     extern Whitelist whitelist;
     extern Tag rfid;
     extern Signalisation signalize;

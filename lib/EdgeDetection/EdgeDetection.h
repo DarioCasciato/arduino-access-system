@@ -1,4 +1,11 @@
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
+
 #include <stdint.h>
+
+#ifndef ARDUINO_ACCESS_SYSTEM_EDGEDETECTION_
+#define ARDUINO_ACCESS_SYSTEM_EDGEDETECTION_
 
 class EdgeDetection
 {
@@ -17,14 +24,41 @@ private:
     } Edge;
 
 public:
+    /// @brief EdgeDetection constructor
+    ///
+    /// @param edgeValue Pointer to the variable representing the edge value
     EdgeDetection(uint8_t *edgeValue);
 
+    /// @brief Update the edge detection for a specific instance
     void updateEdge();
+
+    /// @brief Update the edge detection for all instances of EdgeDetection
     static void updateEdges();
 
+    /// @brief Get the previous state value
+    ///
+    /// @return The previous state value
     uint8_t getOldState();
+
+    /// @brief Get the current state value
+    ///
+    /// @return The current state value
     uint8_t getActState();
+
+    /// @brief Get the edge value
+    ///
+    /// @return The edge value
     uint8_t getEdge();
+
+    /// @brief Get the positive edge value
+    ///
+    /// @return The positive edge value
     uint8_t getEdgePos();
+
+    /// @brief Get the negative edge value
+    ///
+    /// @return The negative edge value
     uint8_t getEdgeNeg();
 };
+
+#endif // ARDUINO_ACCESS_SYSTEM_EDGEDETECTION_

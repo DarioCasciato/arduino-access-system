@@ -1,37 +1,9 @@
-/*
-||
-|| @file Keypad.h
-|| @version 3.1
-|| @author Mark Stanley, Alexander Brevig
-|| @contact mstanley@technologist.com, alexanderbrevig@gmail.com
-||
-|| @description
-|| | This library provides a simple interface for using matrix
-|| | keypads. It supports multiple keypresses while maintaining
-|| | backwards compatibility with the old single key library.
-|| | It also supports user selectable pins and definable keymaps.
-|| #
-||
-|| @license
-|| | This library is free software; you can redistribute it and/or
-|| | modify it under the terms of the GNU Lesser General Public
-|| | License as published by the Free Software Foundation; version
-|| | 2.1 of the License.
-|| |
-|| | This library is distributed in the hope that it will be useful,
-|| | but WITHOUT ANY WARRANTY; without even the implied warranty of
-|| | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-|| | Lesser General Public License for more details.
-|| |
-|| | You should have received a copy of the GNU Lesser General Public
-|| | License along with this library; if not, write to the Free Software
-|| | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-|| #
-||
-*/
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
 
-#ifndef KEYPAD_H
-#define KEYPAD_H
+#ifndef ARDUINO_ACCESS_SYSTEM_KEYPAD_
+#define ARDUINO_ACCESS_SYSTEM_KEYPAD_
 
 #include "Key.h"
 
@@ -42,8 +14,7 @@
 #include "WProgram.h"
 #endif
 
-// bperrybap - Thanks for a well reasoned argument and the following macro(s).
-// See http://arduino.cc/forum/index.php/topic,142041.msg1069480.html#msg1069480
+
 #ifndef INPUT_PULLUP
 #warning "Using  pinMode() INPUT_PULLUP AVR emulation"
 #define INPUT_PULLUP 0x2
@@ -66,8 +37,7 @@ typedef char KeypadEvent;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 
-// Made changes according to this post http://arduino.cc/forum/index.php?topic=58337.0
-// by Nick Gammon. Thanks for the input Nick. It actually saved 78 bytes for me. :)
+
 typedef struct
 {
 	byte rows;
@@ -82,28 +52,105 @@ typedef struct
 class Keypad : public Key
 {
 public:
+	/// @brief Keypad constructor
+	///
+	/// @param userKeymap The keymap to use for the keypad
+	/// @param row An array of pins connected to the keypad rows
+	/// @param col An array of pins connected to the keypad columns
+	/// @param numRows The number of rows in the keypad
+	/// @param numCols The number of columns in the keypad
 	Keypad(char *userKeymap, byte *row, byte *col, byte numRows, byte numCols);
 
+	/// @brief Set the pin mode for a specific pin
+	///
+	/// @param pinNum The pin number
+	/// @param mode The mode to set for the pin
 	virtual void pin_mode(byte pinNum, byte mode) { pinMode(pinNum, mode); }
+
+	/// @brief Write a level to a specific pin
+	///
+	/// @param pinNum The pin number
+	/// @param level The level to write to the pin
 	virtual void pin_write(byte pinNum, boolean level) { digitalWrite(pinNum, level); }
+
+	/// @brief Read the level from a specific pin
+	///
+	/// @param pinNum The pin number
+	/// @return The level read from the pin
 	virtual int pin_read(byte pinNum) { return digitalRead(pinNum); }
+
 
 	uint bitMap[MAPSIZE]; // 10 row x 16 column array of bits. Except Due which has 32 columns.
 	Key key[LIST_MAX];
 	unsigned long holdTimer;
 
+
+	/// @brief Get the key value from the keypad
+	///
+	/// @return The key value as a character
 	char getKey();
+
+	/// @brief Update the state of the keys
+	///
+	/// @return True if any keys have changed state, false otherwise
 	bool getKeys();
+
+	/// @brief Get the state of the keypad
+	///
+	/// @return The current state of the keypad
 	KeyState getState();
+
+	/// @brief Initialize the keypad with the specified keymap
+	///
+	/// @param userKeymap The keymap to use for the keypad
 	void begin(char *userKeymap);
+
+	/// @brief Check if a specific key is pressed
+	///
+	/// @param keyChar The character representing the key
+	/// @return True if the key is pressed, false otherwise
 	bool isPressed(char keyChar);
+
+	/// @brief Set the debounce time for the keypad
+	///
+	/// @param debounceTime The debounce time in milliseconds
 	void setDebounceTime(uint);
+
+	/// @brief Set the hold time for the keypad
+	///
+	/// @param holdTime The hold time in milliseconds
 	void setHoldTime(uint);
+
+	/// @brief Add an event listener for keypad events
+	///
+	/// @param listener The event listener function to add
 	void addEventListener(void (*listener)(char));
+
+	/// @brief Find the index of a key in the active key list by character value
+	///
+	/// @param keyChar The character representing the key
+	/// @return The index of the key in the active key list, or -1 if not found
 	int findInList(char keyChar);
+
+	/// @brief Find the index of a key in the active key list by key code
+	///
+	/// @param keyCode The key code representing the key
+	/// @return The index of the key in the active key list, or -1 if not found
 	int findInList(int keyCode);
+
+	/// @brief Wait for a key press and return the pressed key
+	///
+	/// @return The pressed key as a character
 	char waitForKey();
+
+	/// @brief Check if the state of any key has changed
+	///
+	/// @return True if the state of any key has changed, false otherwise
 	bool keyStateChanged();
+
+	/// @brief Get the number of keys in the active key list
+	///
+	/// @return The number of keys in the active key list
 	byte numKeys();
 
 private:
@@ -123,34 +170,4 @@ private:
 	void (*keypadEventListener)(char);
 };
 
-#endif
-
-/*
-|| @changelog
-|| | 3.1 2013-01-15 - Mark Stanley     : Fixed missing RELEASED & IDLE status when using a single key.
-|| | 3.0 2012-07-12 - Mark Stanley     : Made library multi-keypress by default. (Backwards compatible)
-|| | 3.0 2012-07-12 - Mark Stanley     : Modified pin functions to support Keypad_I2C
-|| | 3.0 2012-07-12 - Stanley & Young  : Removed static variables. Fix for multiple keypad objects.
-|| | 3.0 2012-07-12 - Mark Stanley     : Fixed bug that caused shorted pins when pressing multiple keys.
-|| | 2.0 2011-12-29 - Mark Stanley     : Added waitForKey().
-|| | 2.0 2011-12-23 - Mark Stanley     : Added the public function keyStateChanged().
-|| | 2.0 2011-12-23 - Mark Stanley     : Added the private function scanKeys().
-|| | 2.0 2011-12-23 - Mark Stanley     : Moved the Finite State Machine into the function getKeyState().
-|| | 2.0 2011-12-23 - Mark Stanley     : Removed the member variable lastUdate. Not needed after rewrite.
-|| | 1.8 2011-11-21 - Mark Stanley     : Added test to determine which header file to compile,
-|| |                                          WProgram.h or Arduino.h.
-|| | 1.8 2009-07-08 - Alexander Brevig : No longer uses arrays
-|| | 1.7 2009-06-18 - Alexander Brevig : This library is a Finite State Machine every time a state changes
-|| |                                          the keypadEventListener will trigger, if set
-|| | 1.7 2009-06-18 - Alexander Brevig : Added setDebounceTime setHoldTime specifies the amount of
-|| |                                          microseconds before a HOLD state triggers
-|| | 1.7 2009-06-18 - Alexander Brevig : Added transitionTo
-|| | 1.6 2009-06-15 - Alexander Brevig : Added getState() and state variable
-|| | 1.5 2009-05-19 - Alexander Brevig : Added setHoldTime()
-|| | 1.4 2009-05-15 - Alexander Brevig : Added addEventListener
-|| | 1.3 2009-05-12 - Alexander Brevig : Added lastUdate, in order to do simple debouncing
-|| | 1.2 2009-05-09 - Alexander Brevig : Changed getKey()
-|| | 1.1 2009-04-28 - Alexander Brevig : Modified API, and made variables private
-|| | 1.0 2007-XX-XX - Mark Stanley : Initial Release
-|| #
-*/
+#endif // ARDUINO_ACCESS_SYSTEM_KEYPAD_

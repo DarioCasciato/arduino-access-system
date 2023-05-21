@@ -6,22 +6,22 @@
 #define ARDUINO_ACCESS_SYSTEM_CONFIGURATIONS_
 
 // Pin definitions
-#define RST_PIN 9
-#define SS_PIN 10
+#define RST_PIN 9       ///< Reset pin number
+#define SS_PIN 10       ///< Slave Select pin number
 
-#define SIGNALIZER_BUZZER 14
-#define SIGNALIZER_LED 15
-#define SIGNALIZER_OPENER 17
+#define SIGNALIZER_BUZZER 14    ///< Buzzer pin number for the signalizer
+#define SIGNALIZER_LED 15       ///< LED pin number for the signalizer
+#define SIGNALIZER_OPENER 17    ///< Opener pin number for the signalizer
 
 // How long the Lock should be open after authentication in seconds
-#define OPEN_TIME 3
+#define OPEN_TIME 3     ///< Open time duration in seconds
 
 // Define size of Whitelist (depends on RAM size of Controller)
-#define WHITELIST_SIZE 100
+#define WHITELIST_SIZE 100       ///< Size of the whitelist
 
-// Adresses of Whitelist Values in EEPROM
-#define ADDRESS_WHITELIST 0x020
-#define ADDRESS_WHITELISTCOUNT 0x005
-#define ADDRESS_MASTER 0x010
+// Addresses of Whitelist Values in EEPROM
+#define ADDRESS_WHITELIST 0x020             ///< Address of the whitelist in EEPROM
+#define ADDRESS_WHITELISTCOUNT 0x005        ///< Address of the whitelist count value in EEPROM
+#define ADDRESS_MASTER 0x010                ///< Address of the master value in EEPROM
 
 #endif // ARDUINO_ACCESS_SYSTEM_CONFIGURATIONS_

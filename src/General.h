@@ -22,11 +22,22 @@ struct Properties
 
 namespace General
 {
+    /// @brief Properties struct storing general properties
     extern Properties properties;
+
+    /// @brief Whitelist instance for managing whitelist operations
     extern Whitelist whitelist;
+
+    /// @brief RFID Tag instance for RFID utility operations
     extern Tag rfid;
+
+    /// @brief Signalisation instance for managing signalization
     extern Signalisation signalize;
+
+    /// @brief Value representing tag availability
     extern uint8_t tagAvailableVal;
+
+    /// @brief EdgeDetection instance for tag availability
     extern EdgeDetection tagAvailable;
 } // namespace General
 

@@ -14,6 +14,7 @@
 #include "WProgram.h"
 #endif
 
+
 #ifndef INPUT_PULLUP
 #warning "Using  pinMode() INPUT_PULLUP AVR emulation"
 #define INPUT_PULLUP 0x2
@@ -36,6 +37,7 @@ typedef char KeypadEvent;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 
+
 typedef struct
 {
 	byte rows;
@@ -46,6 +48,7 @@ typedef struct
 #define MAPSIZE 10	// MAPSIZE is the number of rows (times 16 columns)
 #define makeKeymap(x) ((char *)x)
 
+// class Keypad : public Key, public HAL_obj {
 class Keypad : public Key
 {
 public:
@@ -75,6 +78,12 @@ public:
 	/// @param pinNum The pin number
 	/// @return The level read from the pin
 	virtual int pin_read(byte pinNum) { return digitalRead(pinNum); }
+
+
+	uint bitMap[MAPSIZE]; // 10 row x 16 column array of bits. Except Due which has 32 columns.
+	Key key[LIST_MAX];
+	unsigned long holdTimer;
+
 
 	/// @brief Get the key value from the keypad
 	///
@@ -160,7 +169,5 @@ private:
 	void transitionTo(byte n, KeyState nextState);
 	void (*keypadEventListener)(char);
 };
-
-#endif
 
 #endif // ARDUINO_ACCESS_SYSTEM_KEYPAD_

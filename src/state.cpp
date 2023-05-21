@@ -31,25 +31,7 @@ namespace State
 
     void stateNoMaster()
     {
-        if (properties.keyingMasterReset)
-        {
-            if(tagAvailable.getEdgeNeg())
-            {
-                properties.keyingMasterReset = 0;
-            }
-        }
-        else
-        {
-            if (tagAvailable.getActState() &&
-                properties.isMaster)
-            {
-                signalize.green();
-                whitelist.masterSet(properties.uid);
 
-                properties.startKeying = 1;
-                State::state = States::st_keying;
-            }
-        }
     }
 
     void stateIdle()

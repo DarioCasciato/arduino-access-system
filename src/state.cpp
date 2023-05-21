@@ -8,6 +8,9 @@
 
 using namespace General;
 
+
+
+
 //------------------------------------------------------------------------------
 
 // Structure defining events for edge detection
@@ -51,18 +54,19 @@ namespace State
     {
         switch (State::state)
         {
-        case States::st_noMaster:
-            State::stateNoMaster();
-            break;
-        case States::st_idle:
-            State::stateIdle();
-            break;
-        case States::st_keying:
-            State::stateKeying();
-            break;
+        case States::st_noMaster: State::stateNoMaster(); break;
+        case States::st_idle: State::stateIdle(); break;
+        case States::st_keying: State::stateKeying(); break;
+
         default:
+            goto exception;
             break;
         }
+
+        return;
+
+        exception:
+            for(;;) { signalize.exception(); }
     }
 
     // Handler for the no master state

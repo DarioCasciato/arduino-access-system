@@ -142,3 +142,13 @@ void Signalisation::green()
     Hardware::ledSignalization.set_rgbw(0, color_green);
     Hardware::ledSignalization.sync();
 }
+
+void Signalisation::exception()
+{
+    Hardware::ledSignalization.set_rgbw(0, color_red);
+    Hardware::ledSignalization.sync();
+    delay(500);
+    Hardware::ledSignalization.set_rgbw(0, color_off);
+    Hardware::ledSignalization.sync();
+    delay(500);
+}

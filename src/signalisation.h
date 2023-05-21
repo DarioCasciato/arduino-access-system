@@ -47,6 +47,9 @@ public:
 
     /// @brief Perform green signalization
     void green();
+
+    /// @brief Fatal Exception occurred
+    void exception();
 };
 
 #endif // ARDUINO_ACCESS_SYSTEM_SIGNALISATION_

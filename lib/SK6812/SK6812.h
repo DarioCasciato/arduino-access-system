@@ -1,5 +1,9 @@
-#ifndef SK6812_H_
-#define SK6812_H_
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
+
+#ifndef ARDUINO_ACCESS_SYSTEM_SK6812_
+#define ARDUINO_ACCESS_SYSTEM_SK6812_
 
 #include <util/delay.h>
 #include <stdint.h>
@@ -9,6 +13,7 @@
 #define  F_CPU 16000000UL
 #endif
 
+// SK6812 LED structure representing RGBW values
 struct RGBW {
 	uint8_t g; // 0
 	uint8_t r; // 1
@@ -17,17 +22,36 @@ struct RGBW {
 };
 
 class SK6812 {
-public: 
+public:
+	/// @brief SK6812 constructor
+	///
+	/// @param num_led The number of LEDs in the SK6812 chain
 	SK6812(uint16_t num_led);
+
+	/// @brief SK6812 destructor
 	~SK6812();
-	
+
+	/// @brief Set the output pin for the SK6812 LEDs
+	///
+	/// @param pin The pin number to which the SK6812 LEDs are connected
 	void set_output(uint8_t pin);
-	
+
+	/// @brief Get the RGBW value of a specific LED
+	///
+	/// @param index The index of the LED
+	/// @return The RGBW value of the LED
 	RGBW get_rgbw(uint16_t index);
+
+	/// @brief Set the RGBW value of a specific LED
+	///
+	/// @param index The index of the LED
+	/// @param px_value The RGBW value to be set
+	/// @return 0 if successful, 1 if the index is out of range
 	uint8_t set_rgbw(uint16_t index, RGBW px_value);
 
+	/// @brief Synchronize the LED data to the physical LEDs
 	void sync();
-	
+
 private:
 	uint16_t _count_led;
 	RGBW *_pixels;
@@ -40,4 +64,4 @@ private:
 
 };
 
-#endif /* SK6812_H_ */
+#endif // ARDUINO_ACCESS_SYSTEM_SK6812_

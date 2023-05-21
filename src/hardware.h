@@ -15,7 +15,9 @@
 
 namespace Hardware
 {
+    /// @brief Initialize the hardware components
     void init();
+
     // RGB LED
     extern SK6812 ledSignalization;
 

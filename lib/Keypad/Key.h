@@ -1,36 +1,9 @@
-/*
-||
-|| @file Key.h
-|| @version 1.0
-|| @author Mark Stanley
-|| @contact mstanley@technologist.com
-||
-|| @description
-|| | Key class provides an abstract definition of a key or button
-|| | and was initially designed to be used in conjunction with a
-|| | state-machine.
-|| #
-||
-|| @license
-|| | This library is free software; you can redistribute it and/or
-|| | modify it under the terms of the GNU Lesser General Public
-|| | License as published by the Free Software Foundation; version
-|| | 2.1 of the License.
-|| |
-|| | This library is distributed in the hope that it will be useful,
-|| | but WITHOUT ANY WARRANTY; without even the implied warranty of
-|| | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-|| | Lesser General Public License for more details.
-|| |
-|| | You should have received a copy of the GNU Lesser General Public
-|| | License along with this library; if not, write to the Free Software
-|| | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-|| #
-||
-*/
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
 
-#ifndef KEY_H
-#define KEY_H
+#ifndef ARDUINO_ACCESS_SYSTEM_KEY_
+#define ARDUINO_ACCESS_SYSTEM_KEY_
 
 // Arduino versioning.
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -43,31 +16,34 @@
 #define CLOSED HIGH
 
 typedef unsigned int uint;
-typedef enum{ IDLE, PRESSED, HOLD, RELEASED } KeyState;
+typedef enum { IDLE, PRESSED, HOLD, RELEASED } KeyState;
 
 const char NO_KEY = '\0';
 
 class Key {
 public:
+	/// @brief Key constructor
+	Key();
+
+	/// @brief Key constructor with key character
+	///
+	/// @param userKeyChar The character representing the key
+	Key(char userKeyChar);
+
+	/// @brief Update the key with new state and status
+	///
+	/// @param userKeyChar The character representing the key
+	/// @param userState The state of the key
+	/// @param userStatus The status of the key
+	void key_update(char userKeyChar, KeyState userState, boolean userStatus);
+
 	// members
 	char kchar;
 	int kcode;
 	KeyState kstate;
 	boolean stateChanged;
 
-	// methods
-	Key();
-	Key(char userKeyChar);
-	void key_update(char userKeyChar, KeyState userState, boolean userStatus);
-
 private:
-
 };
 
-#endif
-
-/*
-|| @changelog
-|| | 1.0 2012-06-04 - Mark Stanley : Initial Release
-|| #
-*/
+#endif // ARDUINO_ACCESS_SYSTEM_KEY_

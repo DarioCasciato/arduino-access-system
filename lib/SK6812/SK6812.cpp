@@ -1,3 +1,7 @@
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
+
 #include "SK6812.h"
 #include <stdlib.h>
 

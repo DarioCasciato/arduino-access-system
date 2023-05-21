@@ -1,3 +1,7 @@
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
+
 #include "LED.h"
 
 // constructor that initializes the LED pin and active level

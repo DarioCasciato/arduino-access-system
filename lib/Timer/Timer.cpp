@@ -1,3 +1,7 @@
+// =========================================
+// arduino-access-system | Dario Casciato
+// =========================================
+
 #include "Timer.h"
 
 void Timer::start()

@@ -108,57 +108,57 @@ namespace State
 // Event functions for the no master state
 namespace EventsNoMaster
 {
-    void edgePos()
+    void edgePos() // Event handling for positive edge in the no master state
     {
-        // Event handling for positive edge in the no master state
+
     }
 
-    void present()
+    void present() // Event handling for tag present in the no master state
     {
-        // Event handling for tag present in the no master state
+
     }
 
-    void edgeNeg()
+    void edgeNeg() // Event handling for negative edge in the no master state
     {
-        // Event handling for negative edge in the no master state
+
     }
 } // namespace EventsNoMaster
 
 // Event functions for the idle state
 namespace EventsIdle
 {
-    void edgePos()
+    void edgePos() // Event handling for positive edge in the idle state
     {
-        // Event handling for positive edge in the idle state
+
     }
 
-    void present()
+    void present() // Event handling for tag present in the idle state
     {
-        // Event handling for tag present in the idle state
+
     }
 
-    void edgeNeg()
+    void edgeNeg() // Event handling for negative edge in the idle state
     {
-        // Event handling for negative edge in the idle state
+
     }
 } // namespace EventsIdle
 
 // Event functions for the keying state
 namespace EventsKeying
 {
-    void edgePos()
+    void edgePos() // Event handling for positive edge in the keying state
     {
-        // Event handling for positive edge in the keying state
+
     }
 
-    void present()
+    void present() // Event handling for tag present in the keying state
     {
-        // Event handling for tag present in the keying state
+
     }
 
-    void edgeNeg()
+    void edgeNeg() // Event handling for negative edge in the keying state
     {
-        // Event handling for negative edge in the keying state
+
     }
 } // namespace EventsKeying
 

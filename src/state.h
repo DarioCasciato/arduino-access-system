@@ -8,6 +8,32 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_STATE_
 #define ARDUINO_ACCESS_SYSTEM_STATE_
 
+// Forward declaration of EdgeEvents struct
+struct EdgeEvents;
+
+// Forward declarations for event namespaces
+namespace EventsNoMaster
+{
+    void edgePos();
+    void present();
+    void edgeNeg();
+}
+
+namespace EventsIdle
+{
+    void edgePos();
+    void present();
+    void edgeNeg();
+}
+
+namespace EventsKeying
+{
+    void edgePos();
+    void present();
+    void edgeNeg();
+}
+
+
 namespace State
 {
     /// @brief Enumeration of different states
@@ -29,6 +55,12 @@ namespace State
 
     /// @brief Handler for the keying state
     void stateKeying();
+
+    /// @brief Function to handle events based on the state
+    ///
+    /// @param state The EdgeEvents struct containing event functions
+    void eventCaller(EdgeEvents state);
 } // namespace State
+
 
 #endif // ARDUINO_ACCESS_SYSTEM_STATE_

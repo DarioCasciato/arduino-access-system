@@ -5,10 +5,13 @@
 #include <Arduino.h>
 #include "state.h"
 #include "General.h"
+#include "Timer.h"
 
 using namespace General;
 
+Timer timeout;
 
+bool timeoutFlag = false;
 
 
 //------------------------------------------------------------------------------
@@ -69,6 +72,7 @@ namespace State
             for(;;) { signalize.exception(); }
     }
 
+
     // Handler for the no master state
     void stateNoMaster()
     {
@@ -85,7 +89,19 @@ namespace State
     void stateKeying()
     {
         eventCaller(eventsKeying);
+
+        if(timeoutFlag)
+        {
+            if(timeout.elapsed(KEYING_TIMEOUT * 1000))  // Round to ms
+            {
+                signalize.endKeying();
+                state = States::st_noMaster;
+                timeoutFlag = false;
+                timeout.stop();
+            }
+        }
     }
+
 
     // Function to call appropriate events based on state
     void eventCaller(EdgeEvents state)
@@ -163,6 +179,9 @@ namespace EventsKeying
     void edgeNeg() // Event handling for negative edge in the keying state
     {
 
+        //TODO Check if keying is ended, if not, start timeout
+        timeout.start();
+        timeoutFlag = true;
     }
 } // namespace EventsKeying
 

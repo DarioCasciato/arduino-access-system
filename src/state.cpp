@@ -55,7 +55,7 @@ namespace State
     // Function to drive the state machine
     void stateDriver()
     {
-        switch (State::state)
+        switch (state)
         {
         case States::st_noMaster: State::stateNoMaster(); break;
         case States::st_idle: State::stateIdle(); break;
@@ -90,6 +90,7 @@ namespace State
     {
         eventCaller(eventsKeying);
 
+        // Timeout Handler
         if(timeoutFlag)
         {
             if(timeout.elapsed(KEYING_TIMEOUT * 1000))  // Round to ms

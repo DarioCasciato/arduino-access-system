@@ -19,6 +19,14 @@ void setup()
 
   Hardware::init();
   General::whitelist.init();
+
+
+  //! DEBUG
+  General::whitelist.reset();
+  General::whitelist.masterReset();
+  State::onStart();
+
+  Serial.println(General::whitelist.getRegisteredMaster());
 }
 
 void loop()

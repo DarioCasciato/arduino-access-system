@@ -49,6 +49,12 @@ public:
 	/// @return 0 if successful, 1 if the index is out of range
 	uint8_t set_rgbw(uint16_t index, RGBW px_value);
 
+	/// @brief Set the RGBW value of a specific LED and sync it
+	///
+	/// @param index The index of the LED
+	/// @param color The RGBW value to be set
+	void set_color(uint16_t index, RGBW color);
+
 	/// @brief Synchronize the LED data to the physical LEDs
 	void sync();
 

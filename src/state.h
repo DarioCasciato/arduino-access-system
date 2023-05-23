@@ -44,6 +44,9 @@ namespace State
         st_keying       ///< Keying state
     };
 
+    /// @brief  @brief initializes state variable
+    void onStart();
+
     /// @brief State driver function
     void stateDriver();
 

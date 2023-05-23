@@ -11,13 +11,6 @@ Whitelist::Whitelist(uint16_t addrWL, uint16_t addrWLCount, uint16_t addrMaster)
     Whitelist::init();
 }
 
-void Whitelist::init()
-{
-    Whitelist::getWhitelist();
-    Whitelist::getWhitelistCount();
-    Whitelist::getMaster();
-}
-
 void Whitelist::getWhitelist()
 {
     // Get Whitelist
@@ -148,4 +141,11 @@ void Whitelist::masterReset()
 {
     registeredMaster = 0;
     EEPROM.put(_addrMaster, registeredMaster);
+}
+
+void Whitelist::init()
+{
+    Whitelist::getWhitelist();
+    Whitelist::getWhitelistCount();
+    Whitelist::getMaster();
 }

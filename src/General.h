@@ -3,7 +3,6 @@
 // =========================================
 
 #include <Arduino.h>
-#include "stdio.h"
 #include "whitelist.h"
 #include "rfid_utility.h"
 #include "signalisation.h"

@@ -12,6 +12,7 @@ using namespace General;
 Timer timeout;
 
 bool timeoutFlag = false;
+bool keyingStarted = false;
 
 
 //------------------------------------------------------------------------------

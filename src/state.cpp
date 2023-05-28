@@ -156,10 +156,6 @@ namespace EventsNoMaster
 {
     void edgePos() // Event handling for positive edge in the no master state
     {
-    }
-
-    void present() // Event handling for tag present in the no master state
-    {
         if(!flag_resettedMaster && properties.isMaster)
         {
             whitelist.masterSet(properties.uid);
@@ -168,6 +164,11 @@ namespace EventsNoMaster
             flag_keyingStarted = true;
             State::state = State::st_keying;
         }
+    }
+
+    void present() // Event handling for tag present in the no master state
+    {
+
     }
 
     void edgeNeg() // Event handling for negative edge in the no master state
@@ -280,6 +281,7 @@ namespace EventsKeying
                 whitelist.reset();
                 whitelist.masterReset();
 
+                timepresented.stop();
                 State::state = State::st_noMaster;
             }
         }
@@ -288,6 +290,10 @@ namespace EventsKeying
 
     void edgeNeg() // Event handling for negative edge in the keying state
     {
+        Serial.print("Was Master: ");
+        Serial.println(properties.isMaster);
+        Serial.print("UID: ");
+        Serial.println(properties.uid);
 
         if(!flag_resettedMaster)
         {
@@ -305,6 +311,7 @@ namespace EventsKeying
                         signalize.positive();
                         timeout.start();
                         flag_timeout = true;
+                        flag_keyingStarted = false;
                     }
                     else
                     {

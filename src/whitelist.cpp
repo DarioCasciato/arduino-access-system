@@ -16,7 +16,7 @@ void Whitelist::getWhitelist()
     // Get Whitelist
     EEPROM.get(_addrWL, whitelistMember);
 
-    for (uint8_t loop = 0; loop < _addrWLCount; loop++)
+    for (uint8_t loop = 0; loop < whitelistMemberCount; loop++)
     {
         if (whitelistMember[loop] == 0xFFFFFFFF)
             whitelistMember[loop] = 0;
@@ -40,18 +40,18 @@ void Whitelist::getMaster()
 
     if (registeredMaster == 0)
     {
-        for (uint8_t loop = 0; loop < _addrWLCount; loop++)
+        for (uint8_t loop = 0; loop < whitelistMemberCount; loop++)
         {
             whitelistMember[loop] = 0;
         }
 
-        whitelistMember[_addrWLCount] = 0;
+        whitelistMember[whitelistMemberCount] = 0;
     }
 }
 
 void Whitelist::remove(uint32_t UID)
 {
-    for (unsigned char searchLoop = 0; searchLoop < _addrWLCount; searchLoop++)
+    for (uint8_t searchLoop = 0; searchLoop < whitelistMemberCount; searchLoop++)
     {
         if (whitelistMember[searchLoop] == UID)
         {
@@ -59,15 +59,15 @@ void Whitelist::remove(uint32_t UID)
             whitelistMember[searchLoop] = 0;
 
             // Moves back the "NULL" value
-            for (uint8_t moveLoop = searchLoop; moveLoop < _addrWLCount; moveLoop++)
+            for (uint8_t moveLoop = searchLoop; moveLoop < whitelistMemberCount; moveLoop++)
                 whitelistMember[moveLoop] = whitelistMember[moveLoop + 1];
 
-            whitelistMember[_addrWLCount - 1] = 0x00000000;
+            whitelistMember[whitelistMemberCount - 1] = 0x00000000;
 
             EEPROM.put(_addrWL, whitelistMember);
 
             whitelistMemberCount--;
-            EEPROM.put(_addrWLCount, whitelistMemberCount);
+            EEPROM.put(whitelistMemberCount, whitelistMemberCount);
             break;
         }
     }
@@ -78,7 +78,7 @@ bool Whitelist::add(uint32_t UID)
     if (UID == 0)
         return 0;
 
-    for (unsigned char searchLoop = 0; searchLoop < _addrWLCount; searchLoop++)
+    for (uint8_t searchLoop = 0; searchLoop < whitelistMemberCount; searchLoop++)
     {
         if (whitelistMember[searchLoop] == UID)
         {
@@ -86,12 +86,13 @@ bool Whitelist::add(uint32_t UID)
         }
     }
 
-    for (unsigned char nextNull = 0; nextNull < _addrWLCount; nextNull++)
+    for (uint8_t nextNull = 0; nextNull < whitelistMemberCount; nextNull++)
     {
         if (whitelistMember[nextNull] == 0 || whitelistMember[nextNull] == 0)
         {
             whitelistMember[nextNull] = UID;
             EEPROM.put(_addrWL, whitelistMember);
+            Serial.println("Added");
 
             whitelistMemberCount++;
             EEPROM.put(_addrWLCount, whitelistMemberCount);
@@ -105,12 +106,12 @@ bool Whitelist::add(uint32_t UID)
 
 void Whitelist::reset()
 {
-    for (unsigned char deleteLoop = 0; deleteLoop < _addrWLCount; deleteLoop++)
+    for (uint8_t deleteLoop = 0; deleteLoop < whitelistMemberCount; deleteLoop++)
     {
         whitelistMember[deleteLoop] = 0;
     }
 
-    whitelistMember[_addrWLCount] = 0;
+    whitelistMember[whitelistMemberCount] = 0;
 
     EEPROM.put(_addrWL, whitelistMember);
 
@@ -121,7 +122,7 @@ void Whitelist::reset()
 
 bool Whitelist::isMember(uint32_t UID)
 {
-    for (unsigned char searchLoop = 0; searchLoop < _addrWLCount; searchLoop++)
+    for (uint8_t searchLoop = 0; searchLoop < whitelistMemberCount; searchLoop++)
     {
         if (whitelistMember[searchLoop] == 0 || whitelistMember[searchLoop] == 0)
             return 0;

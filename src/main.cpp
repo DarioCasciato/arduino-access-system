@@ -3,6 +3,7 @@
 // =========================================
 
 #include <Arduino.h>
+#include <EEPROM.h>
 #include "hardware.h"
 #include "configurations.h"
 #include "state.h"
@@ -18,15 +19,10 @@ void setup()
   Serial.begin(9600);
 
   Hardware::init();
+  EEPROM.begin();
   General::whitelist.init();
 
-
-  //! DEBUG
-  General::whitelist.reset();
-  General::whitelist.masterReset();
   State::onStart();
-
-  Serial.println(General::whitelist.getRegisteredMaster());
 }
 
 void loop()
@@ -47,11 +43,19 @@ void refreshData()
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
-  General::properties.isMaster = General::rfid.checkMaster();
+  if(General::rfid.checkMaster())
+  {
+    General::properties.isMaster = 1;
+  }
 
   if(General::tagAvailable.getEdgePos())
   {
     General::properties.uid = General::rfid.getUID();
+  }
+
+  if ((!General::tagAvailable.getEdgeNeg()) && (!General::tagAvailable.getActState()))
+  {
+    General::properties.isMaster = 0;
   }
 
 

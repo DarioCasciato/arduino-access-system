@@ -37,9 +37,6 @@ public:
     /// @param addrMaster The EEPROM address of the registered master value
     Whitelist(uint16_t addrWL, uint16_t addrWLCount, uint16_t addrMaster);
 
-    /// @brief Initialize the whitelist
-    void init();
-
     /// @brief Remove a UID from the whitelist
     ///
     /// @param UID The UID to be removed
@@ -72,6 +69,14 @@ public:
     ///
     /// @return The registered master UID
     uint32_t getRegisteredMaster() { return registeredMaster; };
+
+    /// @brief Get the registered master UID
+    ///
+    /// @return The registered master UID
+    uint16_t getWhitelistMemberCount() { return whitelistMemberCount; };
+
+    /// @brief Initialize the whitelist
+    void init();
 };
 
 #endif // ARDUINO_ACCESS_SYSTEM_WHITELIST_

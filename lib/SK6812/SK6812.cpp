@@ -56,3 +56,9 @@ void SK6812::sync()
 	*_port_reg |= _pin_mask;
 	sendarray_mask((uint8_t *)_pixels, _count_led * sizeof(RGBW), _pin_mask, (uint8_t *)_port, (uint8_t *)_port_reg);
 }
+
+void SK6812::set_color(uint16_t index, RGBW color)
+{
+	set_rgbw(index, color);
+	sync();
+}

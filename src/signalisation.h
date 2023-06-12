@@ -9,6 +9,10 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_SIGNALISATION_
 #define ARDUINO_ACCESS_SYSTEM_SIGNALISATION_
 
+extern RGBW color_red;
+extern RGBW color_green;
+extern RGBW color_off;
+
 class Signalisation
 {
 public:

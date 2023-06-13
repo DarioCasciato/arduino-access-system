@@ -65,7 +65,6 @@ namespace State
 
     void onStart()
     {
-        Serial.println(whitelist.getRegisteredMaster());
         if (whitelist.getRegisteredMaster() != 0 && whitelist.getRegisteredMaster() != 0xFFFF)
         {
             state = States::st_idle;
@@ -108,6 +107,9 @@ namespace State
     void stateIdle()
     {
         eventCaller(eventsIdle);
+
+        if(Hardware::keypad_key)
+            Serial.println(Hardware::keypad_key);
     }
 
     // Handler for the keying state
@@ -159,7 +161,6 @@ namespace EventsNoMaster
         if(!flag_resettedMaster && properties.isMaster)
         {
             whitelist.masterSet(properties.uid);
-            Serial.println(properties.uid);
 
             flag_keyingStarted = true;
             State::state = State::st_keying;
@@ -290,11 +291,6 @@ namespace EventsKeying
 
     void edgeNeg() // Event handling for negative edge in the keying state
     {
-        Serial.print("Was Master: ");
-        Serial.println(properties.isMaster);
-        Serial.print("UID: ");
-        Serial.println(properties.uid);
-
         if(!flag_resettedMaster)
         {
             flag_keyingResetWL = false;

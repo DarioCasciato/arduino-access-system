@@ -92,7 +92,6 @@ bool Whitelist::add(uint32_t UID)
         {
             whitelistMember[nextNull] = UID;
             EEPROM.put(_addrWL, whitelistMember);
-            Serial.println("Added");
 
             whitelistMemberCount++;
             EEPROM.put(_addrWLCount, whitelistMemberCount);

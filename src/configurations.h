@@ -29,15 +29,10 @@
 #define ADDRESS_WHITELISTCOUNT  0x000   ///< Address of the whitelist count value in EEPROM
 #define ADDRESS_MASTER          0x006   ///< Address of the master value in EEPROM
 
-// Keypad configurations
-char keys[KEYPAD_ROW_NUM][KEYPAD_COL_NUM] = {
-  {'1','2','3'},
-  {'4','5','6'},
-  {'7','8','9'},
-  {'*','0','#'}
-};
 
-unsigned char keypad_pin_rows[KEYPAD_ROW_NUM] = {8, 3, 4, 6};
-unsigned char keypad_pin_column[KEYPAD_COL_NUM] = {7, 9, 5};
+// Keypad
+extern char keys[KEYPAD_ROW_NUM][KEYPAD_COL_NUM];
+extern unsigned char keypad_pin_column[KEYPAD_COL_NUM];
+extern unsigned char keypad_pin_rows[KEYPAD_ROW_NUM];
 
 #endif // ARDUINO_ACCESS_SYSTEM_CONFIGURATIONS_

@@ -40,6 +40,7 @@ void loop()
 
 void refreshData()
 {
+  // RFID Properties
   General::tagAvailableVal = General::rfid.tagPresent();
   EdgeDetection::updateEdges();
 
@@ -58,7 +59,9 @@ void refreshData()
     General::properties.isMaster = 0;
   }
 
-
   for (uint8_t i = 0; i < 6; i++)
     Hardware::key.keyByte[i] = 0xFF;
+
+  // Keypad
+  Hardware::keypad_key = Hardware::keypad.getKey();
 }

@@ -109,8 +109,6 @@ public:
     /// @return 1 if a pin is registered
     bool isPinRegistered() { return pinIsRegistered; };
 
-    String getPinFast() {return registeredPin; };
-
     /// @brief Initialize the whitelist
     void init();
 };

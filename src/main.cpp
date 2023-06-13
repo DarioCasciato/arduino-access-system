@@ -26,7 +26,6 @@ void setup()
 
 void loop()
 {
-
   for (;;)
   {
     refreshData();
@@ -62,15 +61,12 @@ void refreshData()
     Hardware::key.keyByte[i] = 0xFF;
 
   // Keypad
-  Serial.println(Hardware::keypad_key);
-
-  Hardware::keypad_key_buff = Hardware::keypad.getKey();
-
-  if(Hardware::keypad_key_buff)
-    Hardware::keypad_key = Hardware::keypad_key_buff;
+  Hardware::keypad_key = Hardware::keypad.getKey();
 
   if(Hardware::keypad.getState() == KeyState::RELEASED)
   {
     Hardware::keypad_key = 0;
   }
+
+  //Serial.println(Hardware::keypad_key);
 }

@@ -28,6 +28,7 @@ private:
     uint32_t whitelistMember[WHITELIST_SIZE] = {0};
     uint32_t registeredMaster = 0;
     String registeredPin;
+    bool pinIsRegistered = false;
 
     uint16_t _addrWL = 0;
     uint16_t _addrWLCount = 0;
@@ -104,7 +105,11 @@ public:
     /// @return The registered master UID
     uint16_t getWhitelistMemberCount() { return whitelistMemberCount; };
 
-    String getRegPin() { return registeredPin; };
+    /// @brief checks if a pin is registered
+    /// @return 1 if a pin is registered
+    bool isPinRegistered() { return pinIsRegistered; };
+
+    String getPinFast() {return registeredPin; };
 
     /// @brief Initialize the whitelist
     void init();

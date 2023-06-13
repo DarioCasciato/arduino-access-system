@@ -19,7 +19,7 @@
 // How long the Lock should be open after authentication in seconds
 #define OPEN_TIME               3       ///< Open time duration in seconds
 
-#define KEYING_TIMEOUT          10      ///< Timeout time in keying state
+#define TIME_TIMEOUT            10      ///< Timeout time in keying state
 
 // Define size of Whitelist (depends on RAM size of Controller)
 #define WHITELIST_SIZE          100     ///< Size of the whitelist

@@ -3,6 +3,7 @@
 
 RGBW color_red = {100, 0, 0, 0}; // Values from 0-255
 RGBW color_green = {0, 100, 0, 0};
+RGBW color_blue = {0, 0, 50, 0};
 RGBW color_off = {0, 0, 0, 0};
 
 Signalisation::Signalisation()
@@ -61,6 +62,8 @@ void Signalisation::whitelistFull()
 
 void Signalisation::endKeying()
 {
+    Hardware::ledSignalization.set_rgbw(0, color_off);
+    Hardware::ledSignalization.sync();
     Hardware::buzzer.play(3000);
     delay(700);
     Hardware::buzzer.pause();
@@ -140,6 +143,12 @@ void Signalisation::fullReset()
 void Signalisation::green()
 {
     Hardware::ledSignalization.set_rgbw(0, color_green);
+    Hardware::ledSignalization.sync();
+}
+
+void Signalisation::pinEntry()
+{
+    Hardware::ledSignalization.set_rgbw(0, color_blue);
     Hardware::ledSignalization.sync();
 }
 

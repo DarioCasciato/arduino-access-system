@@ -78,7 +78,10 @@ void Whitelist::getMaster()
 void Whitelist::getPin()
 {
     registeredPin = readPinFromEEPROM(ADDRESS_KEYPAD_PIN);
-    Serial.println(registeredPin);
+    if(registeredPin >= "1000")
+        pinIsRegistered = true;
+    else
+        pinIsRegistered = false;
 }
 
 void Whitelist::remove(uint32_t UID)
@@ -179,12 +182,14 @@ void Whitelist::pinSet(String newPin)
 {
     writePinToEEPROM(ADDRESS_KEYPAD_PIN, newPin);
     registeredPin = newPin;
+    pinIsRegistered = true;
 }
 
 void Whitelist::pinReset()
 {
     registeredPin = "";
     writePinToEEPROM(ADDRESS_KEYPAD_PIN, registeredPin);
+    pinIsRegistered = false;
 }
 
 bool Whitelist::pinCheck(String checkPin)

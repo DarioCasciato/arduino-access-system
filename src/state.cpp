@@ -13,6 +13,7 @@ using namespace General;
 Timer timeout;
 Timer timeaccess;
 Timer timepresented;
+Timer timeKeypad;
 
 void accessGranted();
 
@@ -57,6 +58,13 @@ struct EdgeEvents eventsKeying
     EventsKeying::edgeNeg
 };
 
+struct EdgeEvents eventsKeypadConfig
+{
+    EventsKeypadConfig::edgePos,
+    EventsKeypadConfig::present,
+    EventsKeypadConfig::edgeNeg
+};
+
 //------------------------------------------------------------------------------
 
 namespace State
@@ -83,7 +91,9 @@ namespace State
         {
         case States::st_noMaster: State::stateNoMaster(); break;
         case States::st_idle: State::stateIdle(); break;
+        case States::st_pinEntry: State::statePinEntry(); break;
         case States::st_keying: State::stateKeying(); break;
+        case States::st_keypadConfig: State::stateKeypadConfig(); break;
 
         default:
             goto exception;
@@ -108,8 +118,27 @@ namespace State
     {
         eventCaller(eventsIdle);
 
+        //Keypad
+
+        if(Hardware::keypad.getState() == KeyState::PRESSED)
+            timeKeypad.start();
+
+        if(Hardware::keypad.getState() == KeyState::RELEASED)
+        {
+            Serial.println(timeKeypad.elapsedStart());
+            timeKeypad.stop();
+        }
+
+        /*
         if(Hardware::keypad_key)
             Serial.println(Hardware::keypad_key);
+        */
+    }
+
+    // Handler for the pin entry state
+    void statePinEntry()
+    {
+
     }
 
     // Handler for the keying state
@@ -128,6 +157,12 @@ namespace State
                 timeout.stop();
             }
         }
+    }
+
+    // Handler for the keypad configuration state
+    void stateKeypadConfig()
+    {
+
     }
 
 
@@ -342,6 +377,24 @@ namespace EventsKeying
         timepresented.stop();
     }
 } // namespace EventsKeying
+
+namespace EventsKeypadConfig
+{
+    void edgePos()
+    {
+
+    }
+
+    void present()
+    {
+
+    }
+
+    void edgeNeg()
+    {
+
+    }
+} // namespace EventsKeypadConfig
 
 //------------------------------------------------------------------------------
 

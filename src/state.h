@@ -26,7 +26,21 @@ namespace EventsIdle
     void edgeNeg();
 }
 
+namespace EventsPinEntry
+{
+    void edgePos();
+    void present();
+    void edgeNeg();
+}
+
 namespace EventsKeying
+{
+    void edgePos();
+    void present();
+    void edgeNeg();
+}
+
+namespace EventsKeypadConfig
 {
     void edgePos();
     void present();
@@ -41,7 +55,9 @@ namespace State
     {
         st_noMaster,    ///< No master state
         st_idle,        ///< Idle state
-        st_keying       ///< Keying state
+        st_pinEntry,    ///< Pin Entry state
+        st_keying,      ///< Keying state
+        st_keypadConfig ///< Keypad Configuration state
     };
 
     /// @brief  @brief initializes state variable
@@ -56,8 +72,14 @@ namespace State
     /// @brief Handler for the idle state
     void stateIdle();
 
+    /// @brief Handler for the pin entry state
+    void statePinEntry();
+
     /// @brief Handler for the keying state
     void stateKeying();
+
+    /// @brief Handler for the keypad configuration state
+    void stateKeypadConfig();
 
     /// @brief Function to handle events based on the state
     ///

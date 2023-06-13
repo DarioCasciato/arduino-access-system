@@ -11,6 +11,7 @@
 
 extern RGBW color_red;
 extern RGBW color_green;
+extern RGBW color_blue;
 extern RGBW color_off;
 
 class Signalisation
@@ -51,6 +52,9 @@ public:
 
     /// @brief Perform green signalization
     void green();
+
+    /// @brief Perform Blue signalisation
+    void pinEntry();
 
     /// @brief Fatal Exception occurred
     void exception();

@@ -13,6 +13,7 @@ using namespace General;
 Timer timeout;
 Timer timeaccess;
 Timer timepresented;
+Timer timeKeypad;
 
 void accessGranted();
 
@@ -24,6 +25,8 @@ bool flag_keyingResetWL = false;
 extern RGBW color_red;
 extern RGBW color_green;
 extern RGBW color_off;
+
+String pin = "";
 
 //------------------------------------------------------------------------------
 
@@ -57,6 +60,7 @@ struct EdgeEvents eventsKeying
     EventsKeying::edgeNeg
 };
 
+
 //------------------------------------------------------------------------------
 
 namespace State
@@ -65,7 +69,6 @@ namespace State
 
     void onStart()
     {
-        Serial.println(whitelist.getRegisteredMaster());
         if (whitelist.getRegisteredMaster() != 0 && whitelist.getRegisteredMaster() != 0xFFFF)
         {
             state = States::st_idle;
@@ -84,7 +87,9 @@ namespace State
         {
         case States::st_noMaster: State::stateNoMaster(); break;
         case States::st_idle: State::stateIdle(); break;
+        case States::st_pinEntry: State::statePinEntry(); break;
         case States::st_keying: State::stateKeying(); break;
+        case States::st_keypadConfig: State::stateKeypadConfig(); break;
 
         default:
             goto exception;
@@ -108,6 +113,71 @@ namespace State
     void stateIdle()
     {
         eventCaller(eventsIdle);
+
+        if(Hardware::keypad_key)
+        {
+            if(General::whitelist.isPinRegistered())
+            {
+                if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+                {
+                    state = States::st_pinEntry;
+                    pin += Hardware::keypad_key;
+                    signalize.pinEntry();
+                    timeKeypad.start();
+                }
+            }
+            else
+            {
+                signalize.reject();
+            }
+        }
+    }
+
+    // Handler for the pin entry state
+    void statePinEntry()
+    {
+        if(Hardware::keypad_key)
+            timeKeypad.start();
+
+        if(Hardware::keypad_key && pin.length() < 6)
+        {
+            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            {
+                pin += Hardware::keypad_key;
+            }
+        }
+
+        if(String(Hardware::keypad_key) == "C")
+        {
+            signalize.permDenied();
+            pin = "";
+            timeKeypad.stop();
+            state = States::st_idle;
+        }
+
+        if(String(Hardware::keypad_key) == "E")
+        {
+            if(whitelist.pinCheck(pin))
+            {
+                accessGranted();
+            }
+            else
+            {
+                signalize.permDenied();
+            }
+
+            state = States::st_idle;
+            pin = "";
+            timeKeypad.stop();
+        }
+
+        if(timeKeypad.elapsed(TIME_TIMEOUT * 1000))
+        {
+            signalize.permDenied();
+            pin = "";
+            timeKeypad.stop();
+            state = States::st_idle;
+        }
     }
 
     // Handler for the keying state
@@ -115,16 +185,82 @@ namespace State
     {
         eventCaller(eventsKeying);
 
+        if(Hardware::keypad_key)
+        {
+            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            {
+                pin += Hardware::keypad_key;
+                flag_timeout = false;
+                timeKeypad.start();
+                signalize.pinEntry();
+                state = States::st_keypadConfig;
+            }
+        }
+
         // Timeout Handler
         if(flag_timeout)
         {
-            if(timeout.elapsed(KEYING_TIMEOUT * 1000))  // Round to ms
+            if(timeout.elapsed(TIME_TIMEOUT * 1000))  // Round to ms
             {
                 signalize.endKeying();
                 state = States::st_idle;
                 flag_timeout = false;
                 timeout.stop();
             }
+        }
+    }
+
+    // Handler for the keypad configuration state
+    void stateKeypadConfig()
+    {
+        if(Hardware::keypad_key)
+            timeKeypad.start();
+
+        if(Hardware::keypad_key && pin.length() < 6)
+        {
+            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            {
+                pin += Hardware::keypad_key;
+            }
+        }
+
+        if(String(Hardware::keypad_key) == "C")
+        {
+            signalize.endKeying();
+            pin = "";
+            timeKeypad.stop();
+            timeout.stop();
+            state = States::st_idle;
+        }
+
+        if(String(Hardware::keypad_key) == "E")
+        {
+            if(pin.length() >= 4 && pin.length() <= 6)
+            {
+                whitelist.pinSet(pin);
+                signalize.positive();
+                pin = "";
+                timeKeypad.stop();
+                timeout.start();
+                flag_timeout = true;
+                state = States::st_keying;
+            }
+            else
+            {
+                signalize.permDenied();
+                pin = "";
+                timeKeypad.stop();
+                timeout.stop();
+                state = States::st_idle;
+            }
+        }
+
+        if(timeKeypad.elapsed(TIME_TIMEOUT * 1000))
+        {
+            signalize.endKeying();
+            pin = "";
+            timeKeypad.stop();
+            state = States::st_idle;
         }
     }
 
@@ -159,7 +295,6 @@ namespace EventsNoMaster
         if(!flag_resettedMaster && properties.isMaster)
         {
             whitelist.masterSet(properties.uid);
-            Serial.println(properties.uid);
 
             flag_keyingStarted = true;
             State::state = State::st_keying;
@@ -243,7 +378,7 @@ namespace EventsKeying
 
     void present() // Event handling for tag present in the keying state
     {
-        flag_timeout = false;    //  Reset timeout when Badge presented
+        flag_timeout = false;   //  Reset timeout when Badge presented
         timeout.stop();         //
 
         if(!properties.isMaster || properties.uid == whitelist.getRegisteredMaster())
@@ -280,6 +415,7 @@ namespace EventsKeying
                 signalize.fullReset();
                 whitelist.reset();
                 whitelist.masterReset();
+                whitelist.pinReset();
 
                 timepresented.stop();
                 State::state = State::st_noMaster;
@@ -290,11 +426,6 @@ namespace EventsKeying
 
     void edgeNeg() // Event handling for negative edge in the keying state
     {
-        Serial.print("Was Master: ");
-        Serial.println(properties.isMaster);
-        Serial.print("UID: ");
-        Serial.println(properties.uid);
-
         if(!flag_resettedMaster)
         {
             flag_keyingResetWL = false;
@@ -346,6 +477,7 @@ namespace EventsKeying
         timepresented.stop();
     }
 } // namespace EventsKeying
+
 
 //------------------------------------------------------------------------------
 

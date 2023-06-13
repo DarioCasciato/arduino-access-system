@@ -21,6 +21,17 @@ namespace Hardware
 
     // access LED
     LED accessLED(SIGNALIZER_OPENER);
+
+    //keypad
+    Keypad keypad(
+        makeKeymap(keys),
+        keypad_pin_rows,
+        keypad_pin_column,
+        KEYPAD_ROW_NUM,
+        KEYPAD_COL_NUM
+    );
+
+    char keypad_key = 0;
 } // namespace Hardware
 
 void Hardware::init()

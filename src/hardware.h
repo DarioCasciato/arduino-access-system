@@ -13,6 +13,7 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_HARDWARE_
 #define ARDUINO_ACCESS_SYSTEM_HARDWARE_
 
+
 namespace Hardware
 {
     /// @brief Initialize the hardware components
@@ -33,7 +34,8 @@ namespace Hardware
     extern LED accessLED;
 
     // Keypad
-    //! Keypad keypad();
+    extern Keypad keypad;
+    extern char keypad_key;
 
 } // namespace Hardware
 

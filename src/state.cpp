@@ -26,6 +26,8 @@ extern RGBW color_red;
 extern RGBW color_green;
 extern RGBW color_off;
 
+String pin = "";
+
 //------------------------------------------------------------------------------
 
 // Structure defining events for edge detection
@@ -120,6 +122,7 @@ namespace State
 
         //Keypad
 
+        /*
         if(Hardware::keypad.getState() == KeyState::PRESSED)
             timeKeypad.start();
 
@@ -128,11 +131,20 @@ namespace State
             Serial.println(timeKeypad.elapsedStart());
             timeKeypad.stop();
         }
-
-        /*
-        if(Hardware::keypad_key)
-            Serial.println(Hardware::keypad_key);
         */
+
+
+        if(Hardware::keypad_key)
+        {
+            Serial.println(pin);
+
+            if (pin.length() < 6)
+            {
+                pin += Hardware::keypad_key;
+                Serial.println(pin.length());
+            }
+        }
+
     }
 
     // Handler for the pin entry state

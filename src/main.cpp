@@ -9,6 +9,8 @@
 #include "state.h"
 #include "General.h"
 
+String test = "321654";
+
 
 void refreshData();
 
@@ -27,6 +29,7 @@ void setup()
 
 void loop()
 {
+  General::whitelist.pinSet(test);
 
   for (;;)
   {

@@ -2,11 +2,37 @@
 #include <EEPROM.h>
 #include "whitelist.h"
 
-Whitelist::Whitelist(uint16_t addrWL, uint16_t addrWLCount, uint16_t addrMaster)
+
+// EEPROM functions
+void writePinToEEPROM(int addrOffset, const String &strToWrite)
+{
+  byte len = strToWrite.length();
+  EEPROM.write(addrOffset, len);
+  for (int i = 0; i < len; i++)
+  {
+    EEPROM.write(addrOffset + 1 + i, strToWrite[i]);
+  }
+}
+
+String readPinFromEEPROM(int addrOffset)
+{
+  int newStrLen = EEPROM.read(addrOffset);
+  char data[newStrLen + 1];
+  for (int i = 0; i < newStrLen; i++)
+  {
+    data[i] = EEPROM.read(addrOffset + 1 + i);
+  }
+  data[newStrLen] = '\0';
+  return String(data);
+}
+
+
+Whitelist::Whitelist(uint16_t addrWL, uint16_t addrWLCount, uint16_t addrMaster, uint16_t addrPin)
 {
     _addrWL = addrWL;
     _addrWLCount = addrWLCount;
     _addrMaster = addrMaster;
+    _addrPin = addrPin;
 
     Whitelist::init();
 }
@@ -47,6 +73,12 @@ void Whitelist::getMaster()
 
         whitelistMember[whitelistMemberCount] = 0;
     }
+}
+
+void Whitelist::getPin()
+{
+    registeredPin = readPinFromEEPROM(ADDRESS_KEYPAD_PIN);
+    Serial.println(registeredPin);
 }
 
 void Whitelist::remove(uint32_t UID)
@@ -143,9 +175,30 @@ void Whitelist::masterReset()
     EEPROM.put(_addrMaster, registeredMaster);
 }
 
+void Whitelist::pinSet(String newPin)
+{
+    writePinToEEPROM(ADDRESS_KEYPAD_PIN, newPin);
+    registeredPin = newPin;
+}
+
+void Whitelist::pinReset()
+{
+    registeredPin = "";
+    writePinToEEPROM(ADDRESS_KEYPAD_PIN, registeredPin);
+}
+
+bool Whitelist::pinCheck(String checkPin)
+{
+    if(checkPin == registeredPin)
+        return 1;
+    else
+        return 0;
+}
+
 void Whitelist::init()
 {
     Whitelist::getWhitelist();
     Whitelist::getWhitelistCount();
     Whitelist::getMaster();
+    Whitelist::getPin();
 }

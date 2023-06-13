@@ -24,10 +24,11 @@
 // Define size of Whitelist (depends on RAM size of Controller)
 #define WHITELIST_SIZE          100     ///< Size of the whitelist
 
-// Addresses of Whitelist Values in EEPROM
-#define ADDRESS_WHITELIST       0x00F   ///< Address of the whitelist in EEPROM
+// Addresses of Values in EEPROM
+#define ADDRESS_WHITELIST       0x0F0   ///< Address of the whitelist in EEPROM
 #define ADDRESS_WHITELISTCOUNT  0x000   ///< Address of the whitelist count value in EEPROM
 #define ADDRESS_MASTER          0x006   ///< Address of the master value in EEPROM
+#define ADDRESS_KEYPAD_PIN      0x010   ///< Address of registered Keypad Pin
 
 
 // Keypad

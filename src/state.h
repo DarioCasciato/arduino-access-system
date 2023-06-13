@@ -40,13 +40,6 @@ namespace EventsKeying
     void edgeNeg();
 }
 
-namespace EventsKeypadConfig
-{
-    void edgePos();
-    void present();
-    void edgeNeg();
-}
-
 
 namespace State
 {

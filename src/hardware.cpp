@@ -31,6 +31,7 @@ namespace Hardware
         KEYPAD_COL_NUM
     );
 
+    char keypad_key_buff = 0;
     char keypad_key = 0;
 } // namespace Hardware
 

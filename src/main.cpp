@@ -9,9 +9,6 @@
 #include "state.h"
 #include "General.h"
 
-String test = "321654";
-
-
 void refreshData();
 
 //------------------------------------------------------------------------------
@@ -29,7 +26,6 @@ void setup()
 
 void loop()
 {
-  General::whitelist.pinSet(test);
 
   for (;;)
   {
@@ -66,5 +62,15 @@ void refreshData()
     Hardware::key.keyByte[i] = 0xFF;
 
   // Keypad
-  Hardware::keypad_key = Hardware::keypad.getKey();
+  Serial.println(Hardware::keypad_key);
+
+  Hardware::keypad_key_buff = Hardware::keypad.getKey();
+
+  if(Hardware::keypad_key_buff)
+    Hardware::keypad_key = Hardware::keypad_key_buff;
+
+  if(Hardware::keypad.getState() == KeyState::RELEASED)
+  {
+    Hardware::keypad_key = 0;
+  }
 }

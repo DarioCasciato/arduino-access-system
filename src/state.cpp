@@ -60,12 +60,6 @@ struct EdgeEvents eventsKeying
     EventsKeying::edgeNeg
 };
 
-struct EdgeEvents eventsKeypadConfig
-{
-    EventsKeypadConfig::edgePos,
-    EventsKeypadConfig::present,
-    EventsKeypadConfig::edgeNeg
-};
 
 //------------------------------------------------------------------------------
 
@@ -120,31 +114,8 @@ namespace State
     {
         eventCaller(eventsIdle);
 
-        //Keypad
-
-        /*
-        if(Hardware::keypad.getState() == KeyState::PRESSED)
-            timeKeypad.start();
-
-        if(Hardware::keypad.getState() == KeyState::RELEASED)
-        {
-            Serial.println(timeKeypad.elapsedStart());
-            timeKeypad.stop();
-        }
-        */
-
-
         if(Hardware::keypad_key)
-        {
-            Serial.println(pin);
-
-            if (pin.length() < 6)
-            {
-                pin += Hardware::keypad_key;
-                Serial.println(pin.length());
-            }
-        }
-
+            state = States::st_pinEntry;
     }
 
     // Handler for the pin entry state
@@ -390,23 +361,6 @@ namespace EventsKeying
     }
 } // namespace EventsKeying
 
-namespace EventsKeypadConfig
-{
-    void edgePos()
-    {
-
-    }
-
-    void present()
-    {
-
-    }
-
-    void edgeNeg()
-    {
-
-    }
-} // namespace EventsKeypadConfig
 
 //------------------------------------------------------------------------------
 

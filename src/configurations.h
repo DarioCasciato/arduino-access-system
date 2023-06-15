@@ -9,7 +9,6 @@
 #define VERIFICATION_ON_RFID    false
 
 
-
 // Pin definitions
 #define RST_PIN                 9       ///< Reset pin number
 #define SS_PIN                  10      ///< Slave Select pin number

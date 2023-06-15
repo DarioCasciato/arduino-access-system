@@ -5,6 +5,11 @@
 #ifndef ARDUINO_ACCESS_SYSTEM_CONFIGURATIONS_
 #define ARDUINO_ACCESS_SYSTEM_CONFIGURATIONS_
 
+// Application configurations
+#define VERIFICATION_ON_RFID    false
+
+
+
 // Pin definitions
 #define RST_PIN                 9       ///< Reset pin number
 #define SS_PIN                  10      ///< Slave Select pin number
@@ -24,7 +29,6 @@
 // Define size of Whitelist (depends on RAM size of Controller)
 #define WHITELIST_SIZE          100     ///< Size of the whitelist
 
-#define VERIFICATION_ON_RFID    false
 
 // Addresses of Values in EEPROM
 #define ADDRESS_WHITELIST       0x0F0   ///< Address of the whitelist in EEPROM

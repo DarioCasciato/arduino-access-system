@@ -61,12 +61,10 @@ void refreshData()
     Hardware::key.keyByte[i] = 0xFF;
 
   // Keypad
-  Hardware::keypad_key = Hardware::keypad.getKey();
+  General::keypad_key = Hardware::keypad.getKey();
 
   if(Hardware::keypad.getState() == KeyState::RELEASED)
   {
-    Hardware::keypad_key = 0;
+    General::keypad_key = 0;
   }
-
-  //Serial.println(Hardware::keypad_key);
 }

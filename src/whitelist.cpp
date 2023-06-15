@@ -194,10 +194,7 @@ void Whitelist::pinReset()
 
 bool Whitelist::pinCheck(String checkPin)
 {
-    if(checkPin == registeredPin)
-        return 1;
-    else
-        return 0;
+    return (checkPin == registeredPin) ? true : false;
 }
 
 void Whitelist::init()

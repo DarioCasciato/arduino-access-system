@@ -38,6 +38,8 @@ namespace General
 
     /// @brief EdgeDetection instance for tag availability
     extern EdgeDetection tagAvailable;
+
+    extern char keypad_key;
 } // namespace General
 
 #endif // ARDUINO_ACCESS_SYSTEM_GENERAL_

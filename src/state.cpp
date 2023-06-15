@@ -3,6 +3,7 @@
 // =============================================================================
 
 #include <Arduino.h>
+#include <ctype.h>
 #include "state.h"
 #include "General.h"
 #include "signalisation.h"
@@ -15,6 +16,8 @@ Timer timeaccess;
 Timer timepresented;
 Timer timeKeypad;
 
+void none();
+void exitPinEntry();
 void accessGranted();
 
 bool flag_timeout = false;
@@ -42,15 +45,15 @@ struct EdgeEvents
 struct EdgeEvents eventsNoMaster
 {
     EventsNoMaster::edgePos,
-    EventsNoMaster::present,
+    none,
     EventsNoMaster::edgeNeg
 };
 
 struct EdgeEvents eventsIdle
 {
     EventsIdle::edgePos,
-    EventsIdle::present,
-    EventsIdle::edgeNeg
+    none,
+    none
 };
 
 struct EdgeEvents eventsKeying
@@ -114,14 +117,14 @@ namespace State
     {
         eventCaller(eventsIdle);
 
-        if(Hardware::keypad_key)
+        if(General::keypad_key)
         {
             if(General::whitelist.isPinRegistered())
             {
-                if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+                if(isdigit(General::keypad_key))
                 {
                     state = States::st_pinEntry;
-                    pin += Hardware::keypad_key;
+                    pin += General::keypad_key;
                     signalize.pinEntry();
                     timeKeypad.start();
                 }
@@ -136,26 +139,24 @@ namespace State
     // Handler for the pin entry state
     void statePinEntry()
     {
-        if(Hardware::keypad_key)
+        if(General::keypad_key)
             timeKeypad.start();
 
-        if(Hardware::keypad_key && pin.length() < 6)
+        if(General::keypad_key && pin.length() < 6)
         {
-            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            if(isdigit(General::keypad_key))
             {
-                pin += Hardware::keypad_key;
+                pin += General::keypad_key;
             }
         }
 
-        if(String(Hardware::keypad_key) == "C")
+        if(General::keypad_key == 'C')
         {
             signalize.permDenied();
-            pin = "";
-            timeKeypad.stop();
-            state = States::st_idle;
+            exitPinEntry();
         }
 
-        if(String(Hardware::keypad_key) == "E")
+        if(General::keypad_key == 'E')
         {
             if(whitelist.pinCheck(pin))
             {
@@ -166,17 +167,13 @@ namespace State
                 signalize.permDenied();
             }
 
-            state = States::st_idle;
-            pin = "";
-            timeKeypad.stop();
+            exitPinEntry();
         }
 
         if(timeKeypad.elapsed(TIME_TIMEOUT * 1000))
         {
             signalize.permDenied();
-            pin = "";
-            timeKeypad.stop();
-            state = States::st_idle;
+            exitPinEntry();
         }
     }
 
@@ -185,11 +182,11 @@ namespace State
     {
         eventCaller(eventsKeying);
 
-        if(Hardware::keypad_key)
+        if(General::keypad_key)
         {
-            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            if(isdigit(General::keypad_key))
             {
-                pin += Hardware::keypad_key;
+                pin += General::keypad_key;
                 flag_timeout = false;
                 timeKeypad.start();
                 signalize.pinEntry();
@@ -203,9 +200,8 @@ namespace State
             if(timeout.elapsed(TIME_TIMEOUT * 1000))  // Round to ms
             {
                 signalize.endKeying();
-                state = States::st_idle;
                 flag_timeout = false;
-                timeout.stop();
+                exitPinEntry();
             }
         }
     }
@@ -213,27 +209,25 @@ namespace State
     // Handler for the keypad configuration state
     void stateKeypadConfig()
     {
-        if(Hardware::keypad_key)
+        if(General::keypad_key)
             timeKeypad.start();
 
-        if(Hardware::keypad_key && pin.length() < 6)
+        if(General::keypad_key && pin.length() < 6)
         {
-            if(String(Hardware::keypad_key) != "C" && String(Hardware::keypad_key) != "E")
+            if(isdigit(General::keypad_key))
             {
-                pin += Hardware::keypad_key;
+                pin += General::keypad_key;
             }
         }
 
-        if(String(Hardware::keypad_key) == "C")
+        if(General::keypad_key == 'C')
         {
             signalize.endKeying();
-            pin = "";
-            timeKeypad.stop();
             timeout.stop();
-            state = States::st_idle;
+            exitPinEntry();
         }
 
-        if(String(Hardware::keypad_key) == "E")
+        if(General::keypad_key == 'E')
         {
             if(pin.length() >= 4 && pin.length() <= 6)
             {
@@ -248,19 +242,15 @@ namespace State
             else
             {
                 signalize.permDenied();
-                pin = "";
-                timeKeypad.stop();
                 timeout.stop();
-                state = States::st_idle;
+                exitPinEntry();
             }
         }
 
         if(timeKeypad.elapsed(TIME_TIMEOUT * 1000))
         {
             signalize.endKeying();
-            pin = "";
-            timeKeypad.stop();
-            state = States::st_idle;
+            exitPinEntry();
         }
     }
 
@@ -481,6 +471,11 @@ namespace EventsKeying
 
 //------------------------------------------------------------------------------
 
+void none()
+{
+    // Nothing
+}
+
 void accessGranted()
 {
     timeaccess.start();
@@ -495,4 +490,11 @@ void accessGranted()
 
     timeaccess.stop();
     Hardware::accessLED.off();
+}
+
+void exitPinEntry()
+{
+    pin = "";
+    timeKeypad.stop();
+    State::state = State::st_idle;
 }

@@ -326,7 +326,16 @@ namespace EventsIdle
         {
             if(whitelist.isMember(properties.uid))
             {
-                accessGranted();
+                if(VERIFICATION_ON_RFID)
+                {
+                    State::state = State::st_pinEntry;
+                    signalize.pinEntry();
+                    timeKeypad.start();
+                }
+                else
+                {
+                    accessGranted();
+                }
             }
             else if(properties.uid != 0)
             {

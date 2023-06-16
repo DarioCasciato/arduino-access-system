@@ -142,7 +142,7 @@ namespace State
         if(General::keypad_key)
             timeKeypad.start();
 
-        if(General::keypad_key && pin.length() < 6)
+        if(General::keypad_key && pin.length() < 7)
         {
             if(isdigit(General::keypad_key))
             {

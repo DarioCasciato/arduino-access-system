@@ -19,4 +19,6 @@ namespace General
 
     uint8_t tagAvailableVal;
     EdgeDetection tagAvailable(&tagAvailableVal);
+
+    char keypad_key = 0;
 } // namespace General

@@ -30,8 +30,6 @@ namespace Hardware
         KEYPAD_ROW_NUM,
         KEYPAD_COL_NUM
     );
-
-    char keypad_key = 0;
 } // namespace Hardware
 
 void Hardware::init()

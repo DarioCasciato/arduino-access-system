@@ -35,7 +35,6 @@ namespace Hardware
 
     // Keypad
     extern Keypad keypad;
-    extern char keypad_key;
 
 } // namespace Hardware
 
